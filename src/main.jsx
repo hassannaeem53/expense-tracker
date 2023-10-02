@@ -1,8 +1,10 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import App from './App';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { Provider } from 'react-redux'; // Import Provider
+import store from './redux/store'; // Import your Redux store
+import Dashboard from './components/Dashboard'; // Import the Dashboard component
 
 const darkTheme = createTheme({
   palette: {
@@ -10,8 +12,10 @@ const darkTheme = createTheme({
   },
 });
 createRoot(document.getElementById('root')).render(
-  <ThemeProvider theme={darkTheme}>
-    <CssBaseline />
-    <App />
-  </ThemeProvider>,
+  <Provider store={store}>
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
+      <Dashboard />
+    </ThemeProvider>
+  </Provider>,
 );

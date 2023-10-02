@@ -1,6 +1,7 @@
 import React from 'react';
-import { List, ListItem, ListItemText, Typography, Paper } from '@mui/material';
+import { List, ListItem, ListItemText, Typography } from '@mui/material';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 
 const StyledList = styled(List)`
   max-height: 250px;
@@ -47,7 +48,8 @@ const dateStyle = {
   color: 'rgba(255, 255, 255, 0.5)',
 };
 
-function ExpenseList({ expenses }) {
+function ExpenseList() {
+  const expenses = useSelector((state) => state.expenses?.expenses);
   return (
     <StyledList>
       {expenses.map((expense) => (
@@ -74,7 +76,11 @@ function ExpenseList({ expenses }) {
             </div>
           </ListItemText>
           <div style={dateStyle}>
-            {new Date(expense.createdAt).toLocaleDateString()}
+            {new Date(expense.createdAt).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric',
+            })}
           </div>
         </ListItem>
       ))}

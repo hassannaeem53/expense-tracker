@@ -5,6 +5,8 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
+import { useDispatch } from 'react-redux';
+import { addExpense } from '../redux/reducers/expenseSlice';
 
 // Create an array of expense types
 const expenseTypes = [
@@ -16,10 +18,11 @@ const expenseTypes = [
   // Add more options here
 ];
 
-function ExpenseForm({ onAddExpense }) {
+function ExpenseForm() {
   const [expense, setExpense] = useState('');
   const [amount, setAmount] = useState('');
   const [expenseType, setExpenseType] = useState('');
+  const dispatch = useDispatch();
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -33,10 +36,13 @@ function ExpenseForm({ onAddExpense }) {
       title: expense,
       amount: +amount,
       expenseType,
-      createdAt: new Date(),
+      createdAt: new Date().toISOString(),
     };
 
-    onAddExpense(newExpense);
+    // Dispatch the addExpense action with the newExpense data
+    dispatch(addExpense(newExpense));
+
+    // Reset the form fields
     setExpense('');
     setAmount('');
     setExpenseType('');
