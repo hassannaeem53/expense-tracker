@@ -55,10 +55,22 @@ function ExpenseList({ expenses }) {
           <ListItemText>
             <div>
               <Typography variant="body1">
-                <strong>{expense.title}</strong> | {expense.expenseType}
+                <strong>{expense.title}</strong> |{' '}
+                <span
+                  style={{
+                    color: 'rgba(255, 255, 255, 0.5)',
+                  }}
+                >
+                  {expense.expenseType}
+                </span>
               </Typography>
 
-              <Typography variant="body2">{`$${expense.amount}`}</Typography>
+              <Typography
+                variant="body2"
+                sx={{
+                  marginTop: '0.2rem',
+                }}
+              >{`$${expense.amount}`}</Typography>
             </div>
           </ListItemText>
           <div style={dateStyle}>

@@ -12,6 +12,7 @@ const expenseTypes = [
   'Family Support',
   'Education',
   'Fuel',
+  'Other',
   // Add more options here
 ];
 
@@ -56,6 +57,7 @@ function ExpenseForm({ onAddExpense }) {
         value={expense}
         onChange={(e) => setExpense(e.target.value)}
         sx={{ marginBottom: '1rem' }}
+        required
       />
       <TextField
         label="Amount"
@@ -64,6 +66,7 @@ function ExpenseForm({ onAddExpense }) {
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
         sx={{ marginBottom: '1rem' }}
+        required
       />
       <FormControl
         variant="outlined"
@@ -74,6 +77,7 @@ function ExpenseForm({ onAddExpense }) {
           label="Expense Type"
           value={expenseType}
           onChange={(e) => setExpenseType(e.target.value)}
+          required
         >
           {expenseTypes.map((type) => (
             <MenuItem key={type} value={type}>
