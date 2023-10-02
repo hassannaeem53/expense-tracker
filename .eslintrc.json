@@ -1,0 +1,15 @@
+{
+  "env": {
+    "browser": true,
+    "es2022": true // Use the appropriate ECMAScript version
+  },
+  "extends": ["airbnb", "prettier", "plugin:react/recommended"], // Reorder the extends array
+  "parserOptions": {
+    "ecmaVersion": 2022, // Use the appropriate ECMAScript version
+    "sourceType": "module"
+  },
+  "rules": {
+    "prettier/prettier": "error"
+  },
+  "plugins": ["prettier"]
+}
