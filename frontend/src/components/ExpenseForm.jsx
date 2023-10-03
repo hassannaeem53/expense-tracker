@@ -5,6 +5,8 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
+import { useDispatch } from 'react-redux';
+import { addExpense } from '../redux/reducers/expenseSlice';
 
 // Create an array of expense types
 const expenseTypes = [
@@ -12,13 +14,15 @@ const expenseTypes = [
   'Family Support',
   'Education',
   'Fuel',
+  'Other',
   // Add more options here
 ];
 
-function ExpenseForm({ onAddExpense }) {
+function ExpenseForm() {
   const [expense, setExpense] = useState('');
   const [amount, setAmount] = useState('');
   const [expenseType, setExpenseType] = useState('');
+  const dispatch = useDispatch();
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -32,10 +36,13 @@ function ExpenseForm({ onAddExpense }) {
       title: expense,
       amount: +amount,
       expenseType,
-      createdAt: new Date(),
+      createdAt: new Date().toISOString(),
     };
 
-    onAddExpense(newExpense);
+    // Dispatch the addExpense action with the newExpense data
+    dispatch(addExpense(newExpense));
+
+    // Reset the form fields
     setExpense('');
     setAmount('');
     setExpenseType('');
@@ -56,6 +63,7 @@ function ExpenseForm({ onAddExpense }) {
         value={expense}
         onChange={(e) => setExpense(e.target.value)}
         sx={{ marginBottom: '1rem' }}
+        required
       />
       <TextField
         label="Amount"
@@ -64,6 +72,7 @@ function ExpenseForm({ onAddExpense }) {
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
         sx={{ marginBottom: '1rem' }}
+        required
       />
       <FormControl
         variant="outlined"
@@ -74,6 +83,7 @@ function ExpenseForm({ onAddExpense }) {
           label="Expense Type"
           value={expenseType}
           onChange={(e) => setExpenseType(e.target.value)}
+          required
         >
           {expenseTypes.map((type) => (
             <MenuItem key={type} value={type}>
