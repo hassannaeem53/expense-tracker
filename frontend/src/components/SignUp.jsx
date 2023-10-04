@@ -1,6 +1,6 @@
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { register } from '../redux/reducers/auth';
+import { register as registerUser } from '../redux/reducers/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { TextField, Button } from '@mui/material';
@@ -9,7 +9,7 @@ import { Box } from '@material-ui/core';
 import { Typography } from '@material-ui/core';
 import { Container } from '@material-ui/core';
 import { createTheme } from '@mui/material/styles'; // Import ThemeProvider and createTheme
-
+import { useNavigate } from 'react-router-dom';
 // eslint-disable-next-line no-unused-vars
 const theme = createTheme({
   overrides: {
@@ -68,6 +68,7 @@ const schema = z.object({
 const SignUp = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -77,7 +78,14 @@ const SignUp = () => {
   });
 
   const onSubmit = async (data) => {
-    await dispatch(register(data?.username, data?.email, data?.password));
+    if (data) {
+      console.log(data);
+      await dispatch(registerUser(data));
+      console.log(localStorage.getItem('token'));
+      if (localStorage.getItem('token')) {
+        navigate('/');
+      }
+    }
   };
 
   return (

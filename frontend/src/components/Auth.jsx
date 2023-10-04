@@ -22,7 +22,6 @@ const Auth = () => {
           width: '100vw',
         }}
       >
-        <CssBaseline />
         <Box sx={{ display: 'flex', marginBottom: '1rem' }}>
           <AccountBalanceWalletOutlinedIcon sx={{ fontSize: '5rem' }} />{' '}
           <Typography variant="h2" fontWeight="bold" display="inline">

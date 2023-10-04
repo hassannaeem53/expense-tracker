@@ -10,7 +10,9 @@ async function loginUser(req, res) {
     email: { $regex: new RegExp(newUser.email) },
   });
   if (user) {
-    const validPassword = await bcrypt.compare(newUser.password, user.password);
+    // const validPassword = await bcrypt.compare(newUser.password, user.password);
+
+    const validPassword = newUser.password == user.password;
     if (!validPassword) {
       return res.status(StatusCodes.BAD_REQUEST).send({
         error: 'Invalid email or password',
