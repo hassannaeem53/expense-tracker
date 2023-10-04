@@ -1,16 +1,10 @@
-// write an auth slice that will handle the authentication state of the user.
-// make it according to the auth.jsx file in the frontend.
-// add the API calls to the backend in the auth slice.
-
-// Path: expense-tracker/frontend/src/redux/reducers/auth.js
-
 import { createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
+import axios from '../../axiosConfig';
 import { setAlert } from './alert';
 
 const initialState = {
   token: localStorage.getItem('token'),
-  isAuthenticated: null,
+  isAuthenticated: false,
   loading: true,
   user: null,
 };
@@ -25,7 +19,7 @@ const authSlice = createSlice({
       state.isAuthenticated = true;
       state.loading = false;
     },
-    registerFail: (state, action) => {
+    registerFail: (state) => {
       localStorage.removeItem('token');
       state.token = null;
       state.isAuthenticated = false;
@@ -36,7 +30,7 @@ const authSlice = createSlice({
       state.loading = false;
       state.user = action.payload;
     },
-    authError: (state, action) => {
+    authError: (state) => {
       localStorage.removeItem('token');
       state.token = null;
       state.isAuthenticated = false;
@@ -48,13 +42,13 @@ const authSlice = createSlice({
       state.isAuthenticated = true;
       state.loading = false;
     },
-    loginFail: (state, action) => {
+    loginFail: (state) => {
       localStorage.removeItem('token');
       state.token = null;
       state.isAuthenticated = false;
       state.loading = false;
     },
-    logout: (state, action) => {
+    logout: (state) => {
       localStorage.removeItem('token');
       state.token = null;
       state.isAuthenticated = false;
@@ -76,20 +70,17 @@ export const {
 export const register =
   ({ name, email, password }) =>
   async (dispatch) => {
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
     const body = JSON.stringify({ name, email, password });
     try {
-      const res = await axios.post('/api/users', body, config);
+      const res = await axios.post('/api/users', body);
       dispatch(registerSuccess(res.data));
       dispatch(loadUser());
     } catch (err) {
       const errors = err.response.data.errors;
       if (errors) {
-        errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
+        errors.forEach((error) =>
+          dispatch(setAlert({ msg: error.msg, alertType: 'error' })),
+        );
       }
       dispatch(registerFail());
     }
@@ -108,20 +99,17 @@ export const loadUser = () => async (dispatch) => {
 };
 
 export const login = (email, password) => async (dispatch) => {
-  const config = {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  };
   const body = JSON.stringify({ email, password });
   try {
-    const res = await axios.post('/api/auth', body, config);
+    const res = await axios.post('/api/auth', body);
     dispatch(loginSuccess(res.data));
     dispatch(loadUser());
   } catch (err) {
     const errors = err.response.data.errors;
     if (errors) {
-      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
+      errors.forEach((error) =>
+        dispatch(setAlert({ msg: error.msg, alertType: 'error' })),
+      );
     }
     dispatch(loginFail());
   }

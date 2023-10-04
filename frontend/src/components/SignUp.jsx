@@ -1,6 +1,6 @@
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { login } from '../redux/reducers/auth';
+import { register } from '../redux/reducers/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { TextField, Button } from '@mui/material';
@@ -47,6 +47,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const schema = z.object({
+  name: z
+    .string()
+    .nonempty({ message: 'Name is required' })
+    .min(5, { message: 'Name must be at least 5 characters long' })
+    .max(50, { message: 'Name must be at most 50 characters long' }),
   email: z
     .string()
     .nonempty({ message: 'Email is required' })
@@ -60,7 +65,7 @@ const schema = z.object({
     .max(50, { message: 'Password must be at most 50 characters long' }),
 });
 
-const Login = () => {
+const SignUp = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const {
@@ -72,14 +77,14 @@ const Login = () => {
   });
 
   const onSubmit = async (data) => {
-    await dispatch(login(data?.username, data?.password));
+    await dispatch(register(data?.username, data?.email, data?.password));
   };
 
   return (
     <Container maxWidth="sm">
       <Box mt={5} sx={{ width: '100%' }}>
         <Typography variant="h3" align="center" fontWeight="bold">
-          Login
+          Sign Up
         </Typography>
         <Box
           sx={{
@@ -93,6 +98,14 @@ const Login = () => {
               <Box
                 sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}
               >
+                <TextField
+                  margin="normal"
+                  label="Name"
+                  variant="filled"
+                  {...register('name')}
+                  error={!!errors.name}
+                  helperText={errors.name?.message}
+                />
                 <TextField
                   margin="normal"
                   label="Email"
@@ -112,7 +125,7 @@ const Login = () => {
                 />
                 <Box mt={2} />
                 <Button variant="contained" color="primary" type="submit">
-                  Login
+                  Sign Up
                 </Button>
               </Box>
             </form>
@@ -123,4 +136,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;
