@@ -9,7 +9,7 @@ import { Box } from '@material-ui/core';
 import { Typography } from '@material-ui/core';
 import { Container } from '@material-ui/core';
 import { createTheme } from '@mui/material/styles'; // Import ThemeProvider and createTheme
-
+import { useNavigate } from 'react-router-dom';
 // eslint-disable-next-line no-unused-vars
 const theme = createTheme({
   overrides: {
@@ -61,6 +61,7 @@ const schema = z.object({
 });
 
 const Login = () => {
+  const navigate = useNavigate();
   const classes = useStyles();
   const dispatch = useDispatch();
   const {
@@ -73,6 +74,9 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     await dispatch(login(data?.username, data?.password));
+    if (localStorage.getItem('token')) {
+      navigate('/');
+    }
   };
 
   return (

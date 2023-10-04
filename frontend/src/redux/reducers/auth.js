@@ -72,14 +72,18 @@ export const register =
   async (dispatch) => {
     const body = JSON.stringify({ name, email, password });
     try {
-      const res = await axios.post('/api/users', body);
+      const res = await axios.post('/api/users/register', body);
       dispatch(registerSuccess(res.data));
+      console.log('this is the token ', res.data.token);
+      localStorage.setItem('token', res.data.token);
       dispatch(loadUser());
     } catch (err) {
-      const errors = err.response.data.errors;
-      if (errors) {
-        errors.forEach((error) =>
-          dispatch(setAlert({ msg: error.msg, alertType: 'error' })),
+      const error = err.response.data?.message;
+      const reason = err.response.data?.reason;
+      console.log(reason, error);
+      if (error) {
+        dispatch(
+          setAlert({ msg: `Error! ${reason} : ${error}`, alertType: 'error' }),
         );
       }
       dispatch(registerFail());
@@ -91,7 +95,7 @@ export const loadUser = () => async (dispatch) => {
     axios.defaults.headers.common['x-auth-token'] = localStorage.token;
   }
   try {
-    const res = await axios.get('/api/auth');
+    const res = await axios.get('/api/users/me');
     dispatch(userLoaded(res.data));
   } catch (err) {
     dispatch(authError());
@@ -101,14 +105,16 @@ export const loadUser = () => async (dispatch) => {
 export const login = (email, password) => async (dispatch) => {
   const body = JSON.stringify({ email, password });
   try {
-    const res = await axios.post('/api/auth', body);
+    const res = await axios.post('/api/auth/login', body);
     dispatch(loginSuccess(res.data));
+    localStorage.setItem('token', res.data);
     dispatch(loadUser());
   } catch (err) {
-    const errors = err.response.data.errors;
-    if (errors) {
-      errors.forEach((error) =>
-        dispatch(setAlert({ msg: error.msg, alertType: 'error' })),
+    const error = err.response.data?.error;
+    const reason = err.response.data?.reason;
+    if (error) {
+      dispatch(
+        setAlert({ msg: `Error! ${reason} : ${error}`, alertType: 'error' }),
       );
     }
     dispatch(loginFail());

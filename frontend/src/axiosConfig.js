@@ -1,7 +1,7 @@
 import axios from 'axios';
 // import config from 'config';
 const axiosConfig = axios.create({
-  baseURL: import.meta.env.backendUrl,
+  baseURL: 'http://localhost:3000/',
   headers: {
     'Content-Type': 'application/json',
   },
