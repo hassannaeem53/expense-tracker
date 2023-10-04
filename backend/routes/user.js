@@ -7,13 +7,13 @@ const {
   getCurrentUser,
   // eslint-disable-next-line import/no-dynamic-require
 } = require('../controllers/user');
-// const { validateUser } = require('../middleware/validation');
+const { validateUser } = require('../middleware/validation');
 const auth = require('../middleware/auth');
 
 const router = express.Router();
 
 router.get('/me', auth, getCurrentUser);
 // register a new user
-router.post('/register', registerUser);
+router.post('/register', validateUser, registerUser);
 
 module.exports = router;
