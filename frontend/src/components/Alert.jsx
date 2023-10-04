@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearAlert } from '../redux/alertSlice';
+import { removeAlert } from '../redux/reducers/alert';
 import { Snackbar } from '@material-ui/core';
 import { Alert as MuiAlert } from '@material-ui/lab';
-
 const Alert = (props) => {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 };
@@ -17,11 +16,12 @@ const AlertComponent = () => {
   const alert = useSelector((state) => state.alert);
 
   useEffect(() => {
-    if (alert.message) {
-      setMessage(alert.message);
-      setType(alert.type);
+    if (alert[0]?.msg) {
+      console.log('here');
+      setMessage(alert[0]?.msg);
+      setType(alert[0]?.alertType);
       setOpen(true);
-      dispatch(clearAlert());
+      dispatch(removeAlert(alert[0]?.id));
     }
   }, [alert, dispatch]);
 
@@ -33,7 +33,16 @@ const AlertComponent = () => {
   };
 
   return (
-    <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+    <Snackbar
+      open={open}
+      autoHideDuration={1500}
+      onClose={handleClose}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} // Set anchor origin to 'bottom' and 'center'
+      TransitionProps={{
+        direction: 'up', // Customize the direction of the slide (upward)
+        timeout: 700, // Set the transition duration in milliseconds
+      }}
+    >
       <Alert onClose={handleClose} severity={type}>
         {message}
       </Alert>

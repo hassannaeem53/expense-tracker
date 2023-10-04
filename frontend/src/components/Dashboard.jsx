@@ -25,6 +25,10 @@ import {
 import MenuIcon from '@mui/icons-material/Menu'; // Menu icon
 
 function Dashboard() {
+  //TODO:
+  // 1. Get user data from the backend
+  // 2. Display user data in for each component
+  // 3. Add a logout button
   const [expenses, setExpenses] = useState([]);
   const [isDrawerOpen, setDrawerOpen] = useState(false);
 
