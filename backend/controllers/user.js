@@ -18,7 +18,7 @@ async function registerUser(req, res) {
     const createdUser = await User.create(newUser);
     const resUser = _.pick(createdUser, ['email', 'name', '_id']);
     const token = generateAuthToken(resUser);
-    return res.header('x-auth-token', token).send(resUser);
+    return res.header('x-auth-token', token).send({ user: resUser, token });
   }
   return res.status(StatusCodes.CONFLICT).send({
     message: 'This user already exists',
