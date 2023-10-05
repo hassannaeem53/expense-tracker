@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Container,
   Grid,
@@ -23,18 +23,12 @@ import {
   Person as PersonIcon,
 } from '@mui/icons-material';
 import MenuIcon from '@mui/icons-material/Menu'; // Menu icon
-
 function Dashboard() {
   //TODO:
   // 1. Get user data from the backend
   // 2. Display user data in for each component
   // 3. Add a logout button
-  const [expenses, setExpenses] = useState([]);
   const [isDrawerOpen, setDrawerOpen] = useState(false);
-
-  const addExpenseHandler = (expense) => {
-    setExpenses((prevExpenses) => [expense, ...prevExpenses]);
-  };
 
   const toggleDrawer = () => {
     setDrawerOpen(!isDrawerOpen);
@@ -103,7 +97,7 @@ function Dashboard() {
               <Typography variant="h5" sx={{ paddingBottom: '20px' }}>
                 Add New Expense
               </Typography>
-              <ExpenseForm onAddExpense={addExpenseHandler} />
+              <ExpenseForm />
             </Paper>
           </Grid>
           <Grid item sm={12} md={6}>
@@ -118,7 +112,7 @@ function Dashboard() {
                 <Typography variant="h5">Expenses</Typography>
                 <Typography variant="h6">March</Typography>
               </div>
-              <ExpenseList expenses={expenses} />
+              <ExpenseList />
             </Paper>
           </Grid>
           <Grid item xs={12}>

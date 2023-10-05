@@ -13,45 +13,6 @@ import FormControl from '@mui/material/FormControl';
 import { Box } from '@mui/system';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { blue } from '@mui/material/colors';
-import { orange } from '@mui/material/colors';
-import { deepPurple } from '@mui/material/colors';
-import { deepOrange } from '@mui/material/colors';
-import { yellow } from '@mui/material/colors';
-import { grey } from '@mui/material/colors';
-import { red } from '@mui/material/colors';
-import { pink } from '@mui/material/colors';
-
-// const theme = createTheme({
-//   palette: {
-//     primary: {
-//       main: blue[500],
-//     },
-//     secondary: {
-//       main: orange[500],
-//     },
-//     tertiary: {
-//       main: deepPurple[500],
-//     },
-//     quaternary: {
-//       main: deepOrange[500],
-//     },
-//     quinary: {
-//       main: yellow[500],
-//     },
-//     senary: {
-//       main: grey[500],
-//     },
-//     septenary: {
-//       main: red[500],
-//     },
-//     octonary: {
-//       main: pink[500],
-//     },
-//   },
-// });
-
 const useStyles = makeStyles({
   root: {
     '& .MuiTextField-root': {
@@ -62,7 +23,7 @@ const useStyles = makeStyles({
 });
 
 const GetStarted = () => {
-  const classes = useStyles();
+  // const classes = useStyles();
   const dispatch = useDispatch();
   //   const history = useHistory();
   const [open, setOpen] = useState(true);
@@ -77,29 +38,29 @@ const GetStarted = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-
-    // Create a new expense object
     const newExpense = {
       expense,
       amount,
       expenseType,
     };
-
-    // Dispatch the addExpense action with the newExpense data
     dispatch(addExpense(newExpense));
-
-    // Reset the form fields
     setExpense('');
     setAmount('');
     setExpenseType('');
+    setOpen(false);
   };
-
+  const handleClose = (event, reason) => {
+    if (reason !== 'backdropClick') {
+      setOpen(false);
+    }
+  };
   return (
     <Modal
       open={open}
-      onClose={() => setOpen(false)}
+      onClose={handleClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
+      disableBackdropClick
     >
       <Box
         sx={{
@@ -107,7 +68,8 @@ const GetStarted = () => {
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          width: 400,
+          width: '60vw',
+          height: '60vh',
           bgcolor: 'background.paper',
           border: '2px solid #000',
           boxShadow: 24,
@@ -141,7 +103,7 @@ const GetStarted = () => {
               type="number"
               value={income}
               onChange={(e) => setIncome(e.target.value)}
-              sx={{ marginBottom: '1  rem' }}
+              sx={{ marginBottom: '1rem' }}
               required
             />
             <FormControl
@@ -180,30 +142,7 @@ const GetStarted = () => {
             <FormControl
               variant="outlined"
               sx={{ marginBottom: '1rem', width: '233px' }}
-            >
-              <InputLabel id="demo-simple-select-outlined-label">
-                Expense Type
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-outlined-label"
-                id="demo-simple-select-outlined"
-                value={expenseType}
-                onChange={(e) => setExpenseType(e.target.value)}
-                label="Expense Type"
-              >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                <MenuItem value={'Food'}>Food</MenuItem>
-                <MenuItem value={'Transport'}>Transport</MenuItem>
-                <MenuItem value={'Shopping'}>Shopping</MenuItem>
-                <MenuItem value={'Health'}>Health</MenuItem>
-                <MenuItem value={'Entertainment'}>Entertainment</MenuItem>
-                <MenuItem value={'Education'}>Education</MenuItem>
-                <MenuItem value={'Travel'}>Travel</MenuItem>
-                <MenuItem value={'Other'}>Other</MenuItem>
-              </Select>
-            </FormControl>
+            ></FormControl>
             <Button
               variant="contained"
               type="submit"

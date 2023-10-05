@@ -1,12 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 import axios from '../../axiosConfig';
 import { setAlert } from './alert';
-
+import { setInitialExpenses } from './expenseSlice';
 const initialState = {
   token: localStorage.getItem('token'),
   isAuthenticated: false,
   loading: true,
-  user: null,
+  userId: null,
 };
 
 const authSlice = createSlice({
@@ -28,7 +28,7 @@ const authSlice = createSlice({
     userLoaded: (state, action) => {
       state.isAuthenticated = true;
       state.loading = false;
-      state.user = action.payload;
+      state.userId = action.payload;
     },
     authError: (state) => {
       localStorage.removeItem('token');
@@ -91,12 +91,16 @@ export const register =
   };
 
 export const loadUser = () => async (dispatch) => {
+  console.log(localStorage.token);
   if (localStorage.token) {
     axios.defaults.headers.common['x-auth-token'] = localStorage.token;
   }
   try {
     const res = await axios.get('/api/users/me');
-    dispatch(userLoaded(res.data));
+    dispatch(userLoaded(res.data._id));
+    console.log(res.data);
+    const expensesRes = await axios.get(`/api/expenses/${res.data._id}`);
+    dispatch(setInitialExpenses(expensesRes.data));
   } catch (err) {
     dispatch(authError());
   }

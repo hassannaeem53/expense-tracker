@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   password: String,
+  monthlyIncome: Number,
   createdAt: Date,
 });
 
