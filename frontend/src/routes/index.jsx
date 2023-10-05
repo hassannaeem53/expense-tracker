@@ -7,7 +7,6 @@ import GetStarted from '../components/GetStarted';
 import Auth from '../components/Auth';
 import { RequireAuth } from '../utils/RequireAuth';
 
-
 const AppRouter = () => (
   <Routes>
     <Route path="/auth" element={<Auth />} />
@@ -15,7 +14,7 @@ const AppRouter = () => (
       <Route path="/" element={<Dashboard />} />
     </Route>
     <Route path="*" element={<NotFoundPage />} />
-    <Route path="/" element={<GetStarted />} />
+    <Route path="/get-started" element={<GetStarted />} />
   </Routes>
 );
 

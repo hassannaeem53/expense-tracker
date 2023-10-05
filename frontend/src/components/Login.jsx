@@ -73,7 +73,7 @@ const Login = () => {
   });
 
   const onSubmit = async (data) => {
-    await dispatch(login(data?.username, data?.password));
+    await dispatch(login(data?.email, data?.password));
     if (localStorage.getItem('token')) {
       navigate('/');
     }
