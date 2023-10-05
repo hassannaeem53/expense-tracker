@@ -13,6 +13,7 @@ function Dashboard() {
     setExpenses((prevExpenses) => [expense, ...prevExpenses]);
   };
 
+
   return (
     <div>
       <CssBaseline />
@@ -27,7 +28,7 @@ function Dashboard() {
               <Typography variant="h5" sx={{ paddingBottom: '20px' }}>
                 Add New Expense
               </Typography>
-              <ExpenseForm onAddExpense={addExpenseHandler} />
+              <ExpenseForm />
             </Paper>
           </Grid>
           <Grid item sm={12} md={6}>
@@ -42,7 +43,7 @@ function Dashboard() {
                 <Typography variant="h5">Expenses</Typography>
                 <Typography variant="h6">March</Typography>
               </div>
-              <ExpenseList expenses={expenses} />
+              <ExpenseList />
             </Paper>
           </Grid>
           <Grid item xs={12}>

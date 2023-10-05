@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { List, ListItem, ListItemText, Typography } from '@mui/material';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
@@ -50,6 +50,9 @@ const dateStyle = {
 
 function ExpenseList() {
   const expenses = useSelector((state) => state.expenses?.expenses);
+  useEffect(() => {
+    console.log(expenses);
+  }, [expenses]);
   return (
     <StyledList>
       {expenses.map((expense) => (

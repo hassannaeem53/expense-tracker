@@ -1,48 +1,33 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
-import { useDispatch } from 'react-redux';
-import { addExpense } from '../redux/reducers/expenseSlice';
+
+import { setExpenses } from '../redux/reducers/expenseSlice';
 
 // Create an array of expense types
-const expenseTypes = [
-  'Utility Bills',
-  'Family Support',
-  'Education',
-  'Fuel',
-  'Other',
-  // Add more options here
-];
 
 function ExpenseForm() {
   const [expense, setExpense] = useState('');
   const [amount, setAmount] = useState('');
   const [expenseType, setExpenseType] = useState('');
-  const dispatch = useDispatch();
 
   const submitHandler = (e) => {
     e.preventDefault();
-
     if (expense.trim() === '' || amount <= 0 || expenseType === '') {
       return;
     }
 
     const newExpense = {
-      id: Math.random().toString(),
       title: expense,
       amount: +amount,
       expenseType,
-      createdAt: new Date().toISOString(),
     };
+    setExpenses(newExpense);
 
-    // Dispatch the addExpense action with the newExpense data
-    dispatch(addExpense(newExpense));
-
-    // Reset the form fields
     setExpense('');
     setAmount('');
     setExpenseType('');
@@ -80,16 +65,23 @@ function ExpenseForm() {
       >
         <InputLabel>Expense Type</InputLabel>
         <Select
-          label="Expense Type"
+          labelId="demo-simple-select-outlined-label"
+          id="demo-simple-select-outlined"
           value={expenseType}
           onChange={(e) => setExpenseType(e.target.value)}
-          required
+          label="Expense Type"
         >
-          {expenseTypes.map((type) => (
-            <MenuItem key={type} value={type}>
-              {type}
-            </MenuItem>
-          ))}
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+          <MenuItem value={'Food'}>Food</MenuItem>
+          <MenuItem value={'Transport'}>Transport</MenuItem>
+          <MenuItem value={'Shopping'}>Shopping</MenuItem>
+          <MenuItem value={'Health'}>Health</MenuItem>
+          <MenuItem value={'Entertainment'}>Entertainment</MenuItem>
+          <MenuItem value={'Education'}>Education</MenuItem>
+          <MenuItem value={'Travel'}>Travel</MenuItem>
+          <MenuItem value={'Other'}>Other</MenuItem>
         </Select>
       </FormControl>
       <Button

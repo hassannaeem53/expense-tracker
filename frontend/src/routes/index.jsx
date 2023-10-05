@@ -14,7 +14,9 @@ const AppRouter = () => (
       <Route path="/" element={<Dashboard />} />
     </Route>
     <Route path="*" element={<NotFoundPage />} />
+
     <Route path="/get-started" element={<GetStarted />} />
+
   </Routes>
 );
 

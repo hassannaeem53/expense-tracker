@@ -11,7 +11,7 @@ async function loginUser(req, res) {
   });
   if (user) {
     // const validPassword = await bcrypt.compare(newUser.password, user.password);
-
+    console.log(newUser.password, user.password);
     const validPassword = newUser.password == user.password;
     if (!validPassword) {
       return res.status(StatusCodes.BAD_REQUEST).send({
