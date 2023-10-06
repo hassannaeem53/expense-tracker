@@ -52,14 +52,16 @@ const dateStyle = {
 function ExpenseList() {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.auth.userId);
+
   const expenses = useSelector((state) => state.expenses?.expenses);
+  console.log(expenses);
   useEffect(() => {
     if (userId) dispatch(fetchExpenses(userId));
     console.log(expenses, userId);
   }, [userId, dispatch]);
   return (
     <StyledList>
-      {expenses[expenses.length - 1]?.map((expense) => (
+      {expenses && expenses?.map((expense) => (
         <ListItem key={expense._id} style={listItemStyle}>
           <ListItemText>
             <div>
