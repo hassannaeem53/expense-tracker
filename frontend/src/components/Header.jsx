@@ -21,11 +21,15 @@ import {
   History as HistoryIcon,
   Person as PersonIcon,
 } from '@mui/icons-material';
+import { logout } from '../redux/reducers/auth';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isDrawerOpen, setDrawerOpen] = useState(false);
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleAvatarClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -37,8 +41,11 @@ const Header = () => {
     // Implement your logout logic here
     // Typically, this involves clearing authentication tokens or state
     // For example, you might remove the user's token from localStorage
-    localStorage.removeItem('token');
+
+    dispatch(logout());
+    // localStorage.removeItem('token');
     handleClosePopover();
+    //navigate('/auth');
     location.reload();
 
     // Redirect the user to the login page or perform any other necessary actions
