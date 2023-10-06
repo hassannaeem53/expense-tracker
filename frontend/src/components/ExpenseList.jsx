@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import { List, ListItem, ListItemText, Typography } from '@mui/material';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-
+import { fetchExpenses } from '../redux/reducers/expenseSlice';
+import { useDispatch } from 'react-redux';
 const StyledList = styled(List)`
   max-height: 250px;
   overflow-y: auto;
@@ -49,14 +50,17 @@ const dateStyle = {
 };
 
 function ExpenseList() {
+  const dispatch = useDispatch();
+  const userId = useSelector((state) => state.auth.userId);
   const expenses = useSelector((state) => state.expenses?.expenses);
   useEffect(() => {
-    console.log(expenses);
-  }, [expenses]);
+    if (userId) dispatch(fetchExpenses(userId));
+    console.log(expenses, userId);
+  }, [userId, dispatch]);
   return (
     <StyledList>
-      {expenses.map((expense) => (
-        <ListItem key={expense.id} style={listItemStyle}>
+      {expenses[expenses.length - 1]?.map((expense) => (
+        <ListItem key={expense._id} style={listItemStyle}>
           <ListItemText>
             <div>
               <Typography variant="body1">

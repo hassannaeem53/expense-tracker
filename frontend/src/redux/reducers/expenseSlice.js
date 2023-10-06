@@ -14,7 +14,7 @@ const expenseSlice = createSlice({
   initialState,
   reducers: {
     addExpense: (state, action) => {
-      state.expenses.push(action.payload);
+      state.expenses = [...state.expenses, action.payload];
     },
     getExpenses: (state, action) => {
       state.expenses = action.payload;
@@ -23,12 +23,13 @@ const expenseSlice = createSlice({
 });
 
 export const setExpenses = (expense) => async (dispatch) => {
-  console.log(expense);
+  const userId = expense.userId;
+  delete expense.userId;
   try {
-    const userId = useSelector((state) => state.auth.user._id);
     const res = await axios.post(`/api/expenses/${userId}`, expense);
     console.log(res);
     dispatch(addExpense(expense));
+    dispatch(fetchExpenses(userId));
   } catch (err) {
     console.log(err);
     setAlert({ msg: err.response.data.message, alertType: 'error' });
@@ -36,6 +37,7 @@ export const setExpenses = (expense) => async (dispatch) => {
 };
 
 export const fetchExpenses = (userId) => async (dispatch) => {
+  console.log('fetching expenses...');
   try {
     const res = await axios.get(`/api/expenses/${userId}`);
     if (res.data.length === 0) {
