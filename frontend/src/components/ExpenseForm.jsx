@@ -7,6 +7,7 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 
 import { setExpenses } from '../redux/reducers/expenseSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 // Create an array of expense types
 
@@ -14,7 +15,8 @@ function ExpenseForm() {
   const [expense, setExpense] = useState('');
   const [amount, setAmount] = useState('');
   const [expenseType, setExpenseType] = useState('');
-
+  const dispatch = useDispatch();
+  const userId = useSelector((state) => state.auth.userId);
   const submitHandler = (e) => {
     e.preventDefault();
     if (expense.trim() === '' || amount <= 0 || expenseType === '') {
@@ -25,8 +27,10 @@ function ExpenseForm() {
       title: expense,
       amount: +amount,
       expenseType,
+      userId,
     };
-    setExpenses(newExpense);
+    console.log(newExpense);
+    dispatch(setExpenses(newExpense));
 
     setExpense('');
     setAmount('');
