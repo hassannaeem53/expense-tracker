@@ -26,6 +26,7 @@ const authSlice = createSlice({
       state.loading = false;
     },
     userLoaded: (state, action) => {
+      localStorage.setItem('userId', action.payload);
       state.isAuthenticated = true;
       state.loading = false;
       state.userId = action.payload;
@@ -74,7 +75,6 @@ export const register =
     try {
       const res = await axios.post('/api/users/register', body);
       dispatch(registerSuccess(res.data));
-      console.log('this is the token ', res.data.token);
       localStorage.setItem('token', res.data.token);
       dispatch(loadUser());
     } catch (err) {
@@ -97,9 +97,8 @@ export const loadUser = () => async (dispatch) => {
   try {
     const res = await axios.get('/api/users/me');
     dispatch(userLoaded(res.data._id));
-    console.log(res.data);
+
     const expensesRes = await axios.get(`/api/expenses/${res.data._id}`);
-    //dispatch(setInitialExpenses(expensesRes.data));
   } catch (err) {
     console.log(err);
     dispatch(authError());

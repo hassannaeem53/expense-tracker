@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
-import { List, ListItem, ListItemText, Typography } from '@mui/material';
+import { List, ListItem, ListItemText, Typography, Box } from '@mui/material';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { fetchExpenses } from '../redux/reducers/expenseSlice';
 import { useDispatch } from 'react-redux';
+import { colors } from '../utils/commons';
 const StyledList = styled(List)`
   max-height: 250px;
   overflow-y: auto;
@@ -51,8 +52,7 @@ const dateStyle = {
 
 function ExpenseList() {
   const dispatch = useDispatch();
-  const userId = useSelector((state) => state.auth.userId);
-
+  const userId = localStorage.getItem('userId');
   const expenses = useSelector((state) => state.expenses?.expenses);
   console.log(expenses);
   useEffect(() => {
@@ -61,38 +61,47 @@ function ExpenseList() {
   }, [userId, dispatch]);
   return (
     <StyledList>
-      {expenses && expenses?.map((expense) => (
-        <ListItem key={expense._id} style={listItemStyle}>
-          <ListItemText>
-            <div>
-              <Typography variant="body1">
-                <strong>{expense.title}</strong> |{' '}
-                <span
-                  style={{
-                    color: 'rgba(255, 255, 255, 0.5)',
-                  }}
-                >
-                  {expense.expenseType}
-                </span>
-              </Typography>
+      {expenses &&
+        expenses?.map((expense) => (
+          <ListItem key={expense._id} style={listItemStyle}>
+            <Box
+              sx={{
+                height: '50px',
+                width: '2px',
+                backgroundColor: colors[expense.expenseType],
+                mr: '10px',
+              }}
+            />
+            <ListItemText>
+              <div>
+                <Typography variant="body1">
+                  <strong>{expense.title}</strong> |{' '}
+                  <span
+                    style={{
+                      color: 'rgba(255, 255, 255, 0.5)',
+                    }}
+                  >
+                    {expense.expenseType}
+                  </span>
+                </Typography>
 
-              <Typography
-                variant="body2"
-                sx={{
-                  marginTop: '0.2rem',
-                }}
-              >{`$${expense.amount}`}</Typography>
+                <Typography
+                  variant="body2"
+                  sx={{
+                    marginTop: '0.2rem',
+                  }}
+                >{`$${expense.amount}`}</Typography>
+              </div>
+            </ListItemText>
+            <div style={dateStyle}>
+              {new Date(expense.createdAt).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+              })}
             </div>
-          </ListItemText>
-          <div style={dateStyle}>
-            {new Date(expense.createdAt).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'short',
-              day: 'numeric',
-            })}
-          </div>
-        </ListItem>
-      ))}
+          </ListItem>
+        ))}
     </StyledList>
   );
 }
