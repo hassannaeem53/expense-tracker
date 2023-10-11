@@ -27,10 +27,11 @@ async function registerUser(req, res) {
 }
 
 async function getCurrentUser(req, res) {
+  console.log(req.user);
   const requiredUserId = new ObjectId(req.user.id);
   const user = await User.find({ _id: requiredUserId });
   // dont send password
-  const resUser = _.pick(user[0], ['email', 'name', '_id', 'created_At']);
+  const resUser = _.pick(user[0], ['email', 'name', '_id']);
   res.status(StatusCodes.OK).send(resUser);
 }
 

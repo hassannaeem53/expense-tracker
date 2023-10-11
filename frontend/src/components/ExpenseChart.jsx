@@ -8,8 +8,16 @@ import {
   Tooltip,
 } from 'recharts';
 import { Grid, Paper, Typography } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchExpenses } from '../redux/reducers/expenseSlice';
 
 function ExpenseChart() {
+  const dispatch = useDispatch();
+  const userId = localStorage.getItem('userId');
+  dispatch(fetchExpenses(userId));
+
+  const expenses = useSelector((state) => state.expenses.expenses);
+  console.log(expenses);
   const data1 = [
     { label: 'Food', value: 400 },
     { label: 'Transportation', value: 300 },

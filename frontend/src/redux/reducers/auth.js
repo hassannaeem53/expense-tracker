@@ -97,8 +97,11 @@ export const loadUser = () => async (dispatch) => {
   try {
     const res = await axios.get('/api/users/me');
     dispatch(userLoaded(res.data._id));
-    
+    console.log(res.data);
+    const expensesRes = await axios.get(`/api/expenses/${res.data._id}`);
+    //dispatch(setInitialExpenses(expensesRes.data));
   } catch (err) {
+    console.log(err);
     dispatch(authError());
   }
 };
