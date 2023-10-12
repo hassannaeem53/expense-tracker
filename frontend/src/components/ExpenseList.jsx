@@ -1,10 +1,19 @@
 import React, { useEffect } from 'react';
-import { List, ListItem, ListItemText, Typography, Box } from '@mui/material';
+import {
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
+  Box,
+  IconButton,
+} from '@mui/material';
+import CloseOutlined from '@mui/icons-material/CloseOutlined';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import { fetchExpenses } from '../redux/reducers/expenseSlice';
+import { fetchExpenses, deleteExpense } from '../redux/reducers/expenseSlice';
 import { useDispatch } from 'react-redux';
 import { colors } from '../utils/commons';
+
 const StyledList = styled(List)`
   max-height: 250px;
   overflow-y: auto;
@@ -42,22 +51,15 @@ const listItemStyle = {
   position: 'relative',
 };
 
-const dateStyle = {
-  position: 'absolute',
-  top: '5px',
-  right: '5px',
-  fontSize: '12px',
-  color: 'rgba(255, 255, 255, 0.5)',
-};
-
 function ExpenseList() {
   const dispatch = useDispatch();
   const userId = localStorage.getItem('userId');
   const expenses = useSelector((state) => state.expenses?.expenses);
-  console.log(expenses);
+  const handleDelete = (id) => {
+    dispatch(deleteExpense(id));
+  };
   useEffect(() => {
     if (userId) dispatch(fetchExpenses(userId));
-    console.log(expenses, userId);
   }, [userId, dispatch]);
   return (
     <StyledList>
@@ -66,7 +68,7 @@ function ExpenseList() {
           <ListItem key={expense._id} style={listItemStyle}>
             <Box
               sx={{
-                height: '50px',
+                height: '60px',
                 width: '2px',
                 backgroundColor: colors[expense.expenseType],
                 mr: '10px',
@@ -74,6 +76,16 @@ function ExpenseList() {
             />
             <ListItemText>
               <div>
+                <Box
+                  sx={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.5)' }}
+                >
+                  {new Date(expense.createdAt).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                  })}
+                </Box>
+
                 <Typography variant="body1">
                   <strong>{expense.title}</strong> |{' '}
                   <span
@@ -84,7 +96,6 @@ function ExpenseList() {
                     {expense.expenseType}
                   </span>
                 </Typography>
-
                 <Typography
                   variant="body2"
                   sx={{
@@ -93,13 +104,19 @@ function ExpenseList() {
                 >{`$${expense.amount}`}</Typography>
               </div>
             </ListItemText>
-            <div style={dateStyle}>
-              {new Date(expense.createdAt).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-              })}
-            </div>
+
+            <IconButton
+              aria-label="delete"
+              onClick={() => handleDelete(expense._id)}
+              size="large"
+              sx={{
+                '&:hover > *': {
+                  color: '#ff0000',
+                },
+              }}
+            >
+              <CloseOutlined fontSize="small" />
+            </IconButton>
           </ListItem>
         ))}
     </StyledList>
