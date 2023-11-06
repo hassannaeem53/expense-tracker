@@ -1,0 +1,30 @@
+.fadeInBottom {
+  opacity: 0;
+  transform: translateY(50%);
+  animation: fade-in-bottom 0.5s ease-out forwards;
+}
+
+@keyframes fade-in-bottom {
+  from {
+    opacity: 0;
+    transform: translateY(50%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.appear {
+  opacity: 0;
+  animation: appear 1.5s ease-out forwards;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

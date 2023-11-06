@@ -26,6 +26,7 @@ const authSlice = createSlice({
       state.loading = false;
     },
     userLoaded: (state, action) => {
+      localStorage.setItem('userId', action.payload);
       state.isAuthenticated = true;
       state.loading = false;
       state.userId = action.payload;
@@ -74,7 +75,6 @@ export const register =
     try {
       const res = await axios.post('/api/users/register', body);
       dispatch(registerSuccess(res.data));
-      console.log('this is the token ', res.data.token);
       localStorage.setItem('token', res.data.token);
       dispatch(loadUser());
     } catch (err) {
@@ -91,16 +91,14 @@ export const register =
   };
 
 export const loadUser = () => async (dispatch) => {
-  console.log(localStorage.token);
   if (localStorage.token) {
     axios.defaults.headers.common['x-auth-token'] = localStorage.token;
   }
   try {
     const res = await axios.get('/api/users/me');
     dispatch(userLoaded(res.data._id));
-    console.log(res.data);
+
     const expensesRes = await axios.get(`/api/expenses/${res.data._id}`);
-    //dispatch(setInitialExpenses(expensesRes.data));
   } catch (err) {
     console.log(err);
     dispatch(authError());
@@ -109,7 +107,7 @@ export const loadUser = () => async (dispatch) => {
 
 export const login = (email, password) => async (dispatch) => {
   const body = JSON.stringify({ email, password });
-  console.log(body);
+
   try {
     const res = await axios.post('/api/auth/login', body);
     dispatch(loginSuccess(res.data));

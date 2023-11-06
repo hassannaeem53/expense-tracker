@@ -3,16 +3,11 @@ import { Container, Grid, Paper, Typography, CssBaseline } from '@mui/material';
 import ExpenseForm from './ExpenseForm';
 import ExpenseList from './ExpenseList';
 import ExpenseChart from './ExpenseChart';
-
+import AlertComponent from './Alert';
 import Header from './Header';
 
 function Dashboard() {
   const [expenses, setExpenses] = useState([]);
-
-  const addExpenseHandler = (expense) => {
-    setExpenses((prevExpenses) => [expense, ...prevExpenses]);
-  };
-
 
   return (
     <div>
@@ -53,6 +48,7 @@ function Dashboard() {
             </Paper>
           </Grid>
         </Grid>
+        <AlertComponent />
       </Container>
     </div>
   );

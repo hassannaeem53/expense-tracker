@@ -1,14 +1,17 @@
 import { useState } from 'react';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Box,
+} from '@mui/material';
 
 import { setExpenses } from '../redux/reducers/expenseSlice';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { colors, categories } from '../utils/commons';
 // Create an array of expense types
 
 function ExpenseForm() {
@@ -75,17 +78,20 @@ function ExpenseForm() {
           onChange={(e) => setExpenseType(e.target.value)}
           label="Expense Type"
         >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          <MenuItem value={'Food'}>Food</MenuItem>
-          <MenuItem value={'Transport'}>Transport</MenuItem>
-          <MenuItem value={'Shopping'}>Shopping</MenuItem>
-          <MenuItem value={'Health'}>Health</MenuItem>
-          <MenuItem value={'Entertainment'}>Entertainment</MenuItem>
-          <MenuItem value={'Education'}>Education</MenuItem>
-          <MenuItem value={'Travel'}>Travel</MenuItem>
-          <MenuItem value={'Other'}>Other</MenuItem>
+          {categories.map((category) => (
+            <MenuItem key={category} value={category}>
+              <Box
+                sx={{
+                  width: '10px',
+                  height: '10px',
+                  backgroundColor: colors[category],
+                  borderRadius: '50%',
+                  marginRight: '0.5rem',
+                }}
+              ></Box>
+              {category}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
       <Button
